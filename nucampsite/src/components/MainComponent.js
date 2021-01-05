@@ -1,61 +1,66 @@
-import React, {Component} from 'react';
-import {Navbar,NavbarBrand} from 'reactstrap';
+import React, { Component } from 'react';
 import Directory from './DirectoryComponent';
-import { CampsiteInfo } from "CampsiteInfoComponent";
-import { CAMPSITES} from '../shared/campsites';
-
+import CampsiteInfo from "./CampsiteInfoComponent";
+import Header from "./HeaderComponent";
+import Home from './HomeComponent';
+import Contact from './ContactComponent';
+import {Switch, Route, Redirect } from 'react-router-dom';
+import Footer from './FooterComponent';
+import { CAMPSITES } from '../shared/campsites';
+import { COMMENTS } from '../shared/comments';
+import { PARTNERS } from '../shared/partners';
+import { PROMOTIONS } from '../shared/promotions';
 class Main extends Component {
-  constructor(props)
-  {
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       campsites: CAMPSITES,
-      selectedCampsite: null
-    };
+      comments: COMMENTS,
+      partners: PARTNERS,
+      promotions: PROMOTIONS
+
+
+      };
 
   }
 
-  onCampsiteSelect(campsiteId){
-    this.setState({selectedCampsite:campsiteId});
-}
+ 
 
 
   render() {
+
+    const HomePage = () => {
       return (
-          <div key ={campsite.id} className="App">
-              <Navbar dark color="primary">
-              <div className="container">
-                  <NavbarBrand href="/">NuCamp</NavbarBrand>
-              </div>
-              </Navbar>
-              <Directory campsites = {this.state.campsites} onClick={campsiteId => this.onCampsiteSelect(campsiteId)}/>
-              <CampsiteInfo campsite={this.state.campsites.filter(campsite => campsite.id === this.state.selectedCampsite)[0]}/>
-          </div>
+        <Home
+          campsite ={this.state.campsites.filters(campsite => campsite.featured)[0]}
+          promotion={this.state.promotions.filters(campsite => campsite.promotion)[0]}
+          partner={this.state.promotions.filters(campsite => campsite.partner)[0]}
+        />
       );
+    }
+
+    const CampsiteWithId = ({match}) =>{
+      return (
+        <CampsiteInfo
+          campsite = {this.state.campsites.filter(campsite => campsite.id === +match.params.CampsiteWithId)[0]}
+          comments = {this.state.comments.filter(comment => comment.campsiteId === +match.params.campsiteId)}/>
+      );
+    }
+
+    return (
+      <div>
+        <Header/>
+        <Switch>
+          <Route path='/home' component={HomePage}/>
+          <Route exact path='/directory' render ={() => <Directory campsites={this.state.campsites} />}/>
+          <Route path ='/directory/:campsiteId' component={CampsiteWithId}/>
+          <Route exact path = '/contactus' component = {Contact}/>
+          <Redirect to ='/home'/>
+      </Switch>
+      <Footer/>
+      </div>
+    );
   }
-}
-
-
-
-function App() {
-  return (
-    <div>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
 }
 
 export default Main;
