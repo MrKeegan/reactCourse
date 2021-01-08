@@ -25,18 +25,18 @@ class Main extends Component {
 
 
   render() {
-
+console.log(this.props)
     const HomePage = () => {
       return (
         <Home
-          campsite ={this.props.campsites.filters(campsite => campsite.featured)[0]}
-          promotion={this.props.promotions.filters(campsite => campsite.promotion)[0]}
-          partner={this.props.promotions.filters(campsite => campsite.partner)[0]}
+          campsite={this.props.campsites.filter(campsite => campsite.featured)[0]}
+          promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
+          partner={this.props.partners.filter(partner => partner.featured)[0]}
         />
       );
     }
 
-    const CampsiteWithId = ({match}) =>{
+    const CampsiteWithId=({match}) =>{
       return (
         <CampsiteInfo
           campsite = {this.props.campsites.filter(campsite => campsite.id === +match.params.CampsiteWithId)[0]}
@@ -60,4 +60,4 @@ class Main extends Component {
   }
 }
 
-export default withRouter(connect(mapStatetoProps)(Main));
+export default withRouter(connect(mapStateToProps)(Main));
