@@ -18,14 +18,8 @@ const mapStateToProps = state => {
   }
 }
 class Main extends Component {
-  
-
-
- 
-
-
-  render() {
-console.log(this.props)
+        render() {
+        console.log(this.props)
     const HomePage = () => {
       return (
         <Home
@@ -36,11 +30,12 @@ console.log(this.props)
       );
     }
 
-    const CampsiteWithId=({match}) =>{
+    const CampsiteWithId=({match}) => {
+      console.log(match)
       return (
         <CampsiteInfo
-          campsite = {this.props.campsites.filter(campsite => campsite.id === +match.params.CampsiteWithId)[0]}
-          comments = {this.props.comments.filter(comment => comment.campsiteId === +match.params.campsiteId)}/>
+          campsite = {this.props.campsites.filter(campsite => campsite.id === +match.params.campsiteId)[0]}
+          comments = {this.props.comments.filter(comment => comment.campsiteId === +match.params.campsiteId)} />
       );
     }
 
