@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Directory from './DirectoryComponent';
+import { actions } from 'react-redux-form';
 import CampsiteInfo from "./CampsiteInfoComponent";
 import Header from "./HeaderComponent";
 import Home from './HomeComponent';
@@ -11,7 +12,8 @@ import { addComment, fetchCampsites } from '../redux/ActionCreators';
 
 const mapDispatchToProps = {
   addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
-  fetchCampsites: () => (fetchCampsites())
+  fetchCampsites: () => (fetchCampsites()),
+    resetFeedbackForm: () => (actions.reset('feedbackForm'))
 };
 
 const mapStateToProps = state => {
@@ -71,7 +73,7 @@ render() {
           <Route path='/home' component={HomePage} />
           <Route exact path='/directory' render={() => <Directory campsites={this.props.campsites} />} />
           <Route path='/directory/:campsiteId' component={CampsiteWithId} />
-          <Route exact path='/contactus' component={Contact} />
+          <Route exact path='/contactus' render={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
           <Redirect to='/home' />
         </Switch>
         <Footer />
